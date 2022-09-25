@@ -1,0 +1,259 @@
+<div class="main-container">
+  <h1 style="text-align: center; color: rgb(188, 104, 55)" class="p-5">
+    <strong>EVENT MANAGEMENT SYSTEM</strong>
+  </h1>
+  <div class="container">
+    <button
+      type="button"
+      class="btn btn-success m-2"
+      (click)="createEmployeeModal(createModal)"
+    >
+      Add Employee
+    </button>
+  </div>
+
+  <div class="container table-container">
+    <table class="table p-4" *ngIf="empList?.length">
+      <thead class="border-bottom">
+        <tr>
+          <th class="text-white">ID</th>
+          <th class="text-white">First Name</th>
+          <th class="text-white">Last Name</th>
+          <th class="text-white">Email</th>
+          <th></th>
+          <th></th>
+          <br />
+        </tr>
+      </thead>
+      <br />
+      <tbody>
+        <tr *ngFor="let emp of empList">
+          <td class="text-white">{{ emp.id }}</td>
+          <td class="text-white">{{ emp.first_name }}</td>
+          <td class="text-white">{{ emp.last_name }}</td>
+          <td class="text-white">{{ emp.email }}</td>
+          <td>
+            <button
+              class="btn btn-primary text-white"
+              data-target="#updateModal"
+              (click)="editEmployeeModal(updateModal, emp)"
+            >
+              Edit
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger text-white"
+              (click)="deleteemp(emp.id)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!empList?.length">
+      <h3 class="text-white text-center">No employee's data found !</h3>
+    </div>
+  </div>
+
+  <ng-template #createModal let-modal class="modal">
+    <div
+      style="background-color: rgb(36, 36, 36); backdrop-filter: blur(0.01vw)"
+      class="modal-header text-white"
+    >
+      <h4 class="modal-title">Enter Employee Details</h4>
+      <button
+        type="button"
+        class="close btn btn-danger"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="createForm" (ngSubmit)="createEmployee()">
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input
+            placeholder="first name"
+            formControlName="first_name"
+            class="form-control"
+            [required]="true"
+            [ngClass]="{ 'is-invalid': isSubmit && c['first_name'].errors }"
+          />
+          <div
+            *ngIf="isSubmit && c['first_name'].errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="c['first_name'].errors['required']">
+              First name is required
+            </div>
+            <div *ngIf="c['first_name'].errors['minlength']">
+              Enter atleast 3 characters
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input
+            placeholder="last name"
+            formControlName="last_name"
+            class="form-control"
+            [required]="true"
+            [ngClass]="{ 'is-invalid': isSubmit && c['last_name'].errors }"
+          />
+          <div
+            *ngIf="isSubmit && c['last_name'].errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="c['last_name'].errors['required']">
+              Last name is required
+            </div>
+            <div *ngIf="c['last_name'].errors['minlength']">
+              Enter atleast 3 characters
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label"> Email </label>
+          <input
+            placeholder="email"
+            formControlName="email"
+            class="form-control"
+            [required]="true"
+            [ngClass]="{ 'is-invalid': isSubmit && c['email'].errors }"
+          />
+          <div *ngIf="isSubmit && c['email'].errors" class="invalid-feedback">
+            <div *ngIf="c['email'].errors['required']">Email is required</div>
+            <div *ngIf="c['email'].errors['email']">
+              Email must be a valid email address
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            mat-raised-button
+            class="btn btn-primary"
+            mat-button
+            type="submit"
+          >
+            Add Employee
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-warning"
+            (click)="modal.close('Save click')"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #updateModal let-modal class="modal">
+    <div
+      class="modal-header"
+      style="background-color: rgb(36, 36, 36); backdrop-filter: blur(0.01vw)"
+    >
+      <h4 class="modal-title text-white">Update Details</h4>
+      <button
+        type="button"
+        class="close btn btn-danger"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form
+        #u="ngForm"
+        [formGroup]="updateForm"
+        (ngSubmit)="editEmployee(employee.id)"
+      >
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input
+            placeholder="first name"
+            formControlName="first_name"
+            class="form-control"
+            [ngModel]="employee.first_name"
+            [required]="true"
+            [ngClass]="{ 'is-invalid': isSubmit && c['first_name'].errors }"
+          />
+          <div
+            *ngIf="isSubmit && c['first_name'].errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="c['first_name'].errors['required']">
+              First name is required
+            </div>
+            <div *ngIf="c['first_name'].errors['minlength']">
+              Enter atleast 3 characters
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input
+            placeholder="last name"
+            formControlName="last_name"
+            class="form-control"
+            [ngModel]="employee.last_name"
+            [required]="true"
+            [ngClass]="{ 'is-invalid': isSubmit && c['last_name'].errors }"
+          />
+          <div
+            *ngIf="isSubmit && c['last_name'].errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="c['last_name'].errors['required']">
+              Last name is required
+            </div>
+            <div *ngIf="c['last_name'].errors['minlength']">
+              Enter atleast 3 characters
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label"> Email </label>
+          <input
+            placeholder="email"
+            formControlName="email"
+            class="form-control"
+            [ngModel]="employee.email"
+            [required]="true"
+            [ngClass]="{ 'is-invalid': isSubmit && c['email'].errors }"
+          />
+          <div *ngIf="isSubmit && c['email'].errors" class="invalid-feedback">
+            <div *ngIf="c['email'].errors['required']">Email is required</div>
+            <div *ngIf="c['email'].errors['email']">
+              Email must be a valid email address
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            mat-raised-button
+            class="btn btn-primary"
+            mat-button
+            type="submit"
+          >
+            Update
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-warning"
+            (click)="modal.close('Save click')"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

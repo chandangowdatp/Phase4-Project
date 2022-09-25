@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,300&family=Signika+Negative:wght@300&display=swap');
+body {
+  background: url("./assets/bg.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Signika Negative', sans-serif;
+}
+.modal-open {
+  z-index: 1;
+}

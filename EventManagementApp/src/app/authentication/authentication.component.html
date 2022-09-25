@@ -1,0 +1,58 @@
+<h1 style="text-align: center;color: rgb(191, 121, 52);" class="p-5"><strong>EVENT MANAGEMENT SYSTEM</strong></h1>
+
+<div class="signin-container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <h3>Sign in</h3>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="text"
+            placeholder="Enter email"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Email is required</div>
+            <div *ngIf="f['email'].errors['email']">
+              Invalid email address
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            class="form-control"
+            formControlName="password"
+            [ngClass]="{
+              'is-invalid': submitted && f['password'].errors
+            }"
+          />
+          <div
+            *ngIf="submitted && f['password'].errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['password'].errors['required']">
+              Password is required
+            </div>
+            <div *ngIf="f['password'].errors['minlength']">
+              Password must be at least 6 characters
+            </div>
+          </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+          <a href="#" class="btn btn-success animated-button victoria-two">
+            <button>Sign In</button>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
